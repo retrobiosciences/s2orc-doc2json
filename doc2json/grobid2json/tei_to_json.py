@@ -5,6 +5,7 @@ import sys
 import bs4
 import re
 from bs4 import BeautifulSoup, NavigableString
+from pathlib import Path
 from typing import List, Dict, Tuple
 
 from doc2json.s2orc import Paper
@@ -405,12 +406,12 @@ def process_citations_in_paragraph(para_el: BeautifulSoup, sp: BeautifulSoup, bi
 
 
 def process_paragraph(
-        sp: BeautifulSoup,
-        para_el: bs4.element.Tag,
-        section_names: List[Tuple],
-        bib_dict: Dict,
-        ref_dict: Dict,
-        bracket: bool
+    sp: BeautifulSoup,
+    para_el: bs4.element.Tag,
+    section_names: List[Tuple],
+    bib_dict: Dict,
+    ref_dict: Dict,
+    bracket: bool
 ) -> Dict:
     """
     Process one paragraph
@@ -750,7 +751,7 @@ def convert_tei_xml_file_to_s2orc_json(tei_file: str, pdf_hash: str = "") -> Pap
     """
     if not os.path.exists(tei_file):
         raise FileNotFoundError("Input TEI XML file doesn't exist")
-    paper_id = tei_file.split('/')[-1].split('.')[0]
+    paper_id = Path(tei_file).stem.replace('.tei', '')
     soup = BeautifulSoup(open(tei_file, "rb").read(), "xml")
     paper = convert_tei_xml_soup_to_s2orc_json(soup, paper_id, pdf_hash)
     return paper
