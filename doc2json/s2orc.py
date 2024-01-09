@@ -442,9 +442,17 @@ class Paper:
             formatted_entries.append(entry)
         return "\n\n".join(formatted_entries)
 
-    def as_markdown(self, include_references: bool = True):
-        markdown = f"# {self.metadata.title}\n\n"
-        markdown += f"**Authors:** {Paper.markdown_format_authors(self.metadata.authors)}\n\n"
+    def as_markdown(
+        self, 
+        include_title: bool = True,
+        include_authors: bool = True,
+        include_references: bool = True
+    ):
+        markdown = ""
+        if include_title:
+            markdown = f"# {self.metadata.title}\n\n"
+        if include_authors:
+            markdown += f"**Authors:** {Paper.markdown_format_authors(self.metadata.authors)}\n\n"
         markdown += f"## Abstract\n{self.raw_abstract_text}\n\n"
         markdown += "## Body\n"
         current_section = None
